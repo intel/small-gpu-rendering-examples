@@ -1,4 +1,4 @@
-set(PROGRAMS a b)
+set(PROGRAMS main)
 
 foreach(program ${PROGRAMS})
   add_executable(${program} ${program}.cpp)
