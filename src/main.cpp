@@ -2,6 +2,12 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 
+void keyPressHandler(const SDL_Event& event) {
+    if (event.type != SDL_KEYDOWN) return;
+
+}
+
+
 int main(int argc, char *argv[])
 {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
@@ -16,18 +22,18 @@ int main(int argc, char *argv[])
     glewExperimental = GL_TRUE;
     glewInit();
 
-    SDL_Event windowEvent;
-    while (true)
-    {
-        if (SDL_PollEvent(&windowEvent))
-        {
-            if (windowEvent.type == SDL_QUIT) break;
+    SDL_Event event;
+    bool quit = false;
+    while (!quit) {
+        if (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) quit = true;
+            else keyPressHandler(event);
         }
-
         SDL_GL_SwapWindow(window);
     }
 
     SDL_GL_DeleteContext(context);
+    SDL_DestroyWindow(window);
     SDL_Quit();
     return 0;
 }
