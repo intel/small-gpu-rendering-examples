@@ -83,16 +83,24 @@ SDL_GLContext initContext(SDL_Window *window) {
     return context;
 }
 
-void initBuffers(GLuint shaderProgram, SDL_GLContext context) {
+/**
+ * Copy buffers to memory, set shader attributes, bind to VAO.
+ * Return bound VAO ID.
+ */
+GLuint initBuffers(GLuint shaderProgram, SDL_GLContext context) {
     GLuint vbo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
                  GL_STATIC_DRAW);
 
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(posAttrib);
+    return vao;
 }
 
 void paint() {
