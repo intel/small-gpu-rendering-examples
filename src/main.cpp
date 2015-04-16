@@ -35,6 +35,9 @@ const std::string readFile(const std::string& filepath) {
 
 enum class ShaderType {vertex, fragment};
 
+/**
+ * Read |filename| from SHADERS_DIR, compile it as a shader and return its ID.
+ */
 GLuint compileShader(const std::string& filename, ShaderType type) {
     auto source = readFile(SHADERS_DIR + filename).c_str();
     auto gl_type = GL_VERTEX_SHADER;
@@ -57,6 +60,20 @@ GLuint compileShader(const std::string& filename, ShaderType type) {
     return shader;
 }
 
+/**
+ * Return ID of the linked and activated shader.
+ */
+GLuint initShaders() {
+    auto vshader = compileShader("vshader.glsl", ShaderType::vertex);
+    auto fshader = compileShader("fshader.glsl", ShaderType::fragment);
+    GLuint shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vshader);
+    glAttachShader(shaderProgram, fshader);
+    glLinkProgram(shaderProgram);
+    glUseProgram(shaderProgram);
+    return shaderProgram;
+}
+
 int main(int argc, char *argv[]) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
                         SDL_GL_CONTEXT_PROFILE_CORE);
@@ -75,13 +92,6 @@ int main(int argc, char *argv[]) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
                  GL_STATIC_DRAW);
-    auto vshader = compileShader("vshader.glsl", ShaderType::vertex);
-    auto fshader = compileShader("fshader.glsl", ShaderType::fragment);
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vshader);
-    glAttachShader(shaderProgram, fshader);
-    glLinkProgram(shaderProgram);
-    glUseProgram(shaderProgram);
 
     SDL_Event event;
     bool quit = false;
