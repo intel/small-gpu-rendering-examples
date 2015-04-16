@@ -83,6 +83,22 @@ SDL_GLContext initContext(SDL_Window *window) {
     return context;
 }
 
+void initBuffers(GLuint shaderProgram, SDL_GLContext context) {
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
+                 GL_STATIC_DRAW);
+
+    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(posAttrib);
+}
+
+void paint() {
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
 int main(int argc, char *argv[]) {
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window* window = SDL_CreateWindow("Hello World",
@@ -92,11 +108,8 @@ int main(int argc, char *argv[]) {
     glewExperimental = GL_TRUE;
     glewInit();
 
-    GLuint vbo;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
-                 GL_STATIC_DRAW);
+    auto program = initShaders();
+    initBuffers(program, context);
 
     SDL_Event event;
     bool quit = false;
@@ -105,6 +118,7 @@ int main(int argc, char *argv[]) {
             if (event.type == SDL_QUIT) quit = true;
             else keyPressHandler(event);
         }
+        paint();
         SDL_GL_SwapWindow(window);
     }
 
