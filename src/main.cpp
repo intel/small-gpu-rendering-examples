@@ -74,6 +74,7 @@ int main(int argc, char *argv[]) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
                  GL_STATIC_DRAW);
     compileShader("vshader.glsl", ShaderType::vertex);
+    compileShader("fshader.glsl", ShaderType::fragment);
 
     SDL_Event event;
     bool quit = false;
