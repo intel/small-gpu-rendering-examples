@@ -1,6 +1,7 @@
 # OpenGL snippets
 
-Pieces of C++ and OpenGL code for learning and experimenting.
+Pieces of C++ and OpenGL code for learning and experimenting. Some of the code
+was created with the help of the tutorial on https://open.gl.
 
 
 ## Building from source
