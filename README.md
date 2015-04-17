@@ -5,9 +5,9 @@ Pieces of C++ and OpenGL code for learning and experimenting.
 
 ## Building from source
 
-You will need at least OpenGL 3.0 and Linux (tested on Ubuntu Trusty).
+You will need at least OpenGL 3.2 and Linux (tested on Ubuntu Trusty).
 
-    $ glxinfo|grep "OpenGL version"  # should be at least 3.0
+    $ glxinfo|grep "OpenGL core profile version"  # should be at least 3.2
     $ sudo apt-get install cmake clang libsdl2-dev
 
     $ mkdir build
