@@ -112,7 +112,9 @@ GLuint initBuffers(GLuint shaderProgram, SDL_GLContext context) {
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+    GLint uniColor = glGetUniformLocation(shaderProgram, "triangleColor");
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glUniform3f(uniColor, 1.0f, 0.0f, 0.0f);
     glEnableVertexAttribArray(posAttrib);
     return vao;
 }
