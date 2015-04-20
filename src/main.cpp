@@ -78,6 +78,15 @@ GLuint compileShader(const std::string& filename, ShaderType type) {
     return shader;
 }
 
+void initGlew() {
+    glewExperimental = GL_TRUE;
+    GLenum err = glewInit();
+    printGlErrors();
+    if(err != GLEW_OK) {
+        throw std::runtime_error("glewInit failed");
+    }
+}
+
 /**
  * Return ID of the linked and activated shader.
  */
@@ -144,10 +153,7 @@ int main(int argc, char *argv[]) {
                                            100, 100, 800, 600,
                                            SDL_WINDOW_OPENGL);
     auto context = initContext(window);
-    glewExperimental = GL_TRUE;
-    glewInit();
-    printGlErrors();
-
+    initGlew();
     auto program = initShaders();
     initBuffers(program);
 
