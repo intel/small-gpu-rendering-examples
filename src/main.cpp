@@ -18,9 +18,10 @@
 #include <streambuf>
 #include <stdexcept>
 #include <GL/glew.h>
-#include <GL/glu.h>
 #include <SDL.h>
 #include <SDL_opengl.h>
+
+#include "error.h"
 
 #ifndef SHADERS_DIR
 #define SHADERS_DIR "./shaders/"
@@ -37,18 +38,6 @@ void keyPressHandler(const SDL_Event& event) {
 
 }
 
-void printGlErrors(const char* where="") {
-    GLenum error = GL_NO_ERROR;
-    do {
-        error = glGetError();
-        if (error != GL_NO_ERROR) {
-            std::cerr << "OpenGL Error: ";
-            if (strlen(where) > 0)
-                std::cerr << "(" << where << ") ";
-            std::cerr << gluErrorString(error) << std::endl;
-        }
-    } while (error != GL_NO_ERROR);
-}
 
 const std::string readFile(const std::string& filepath) {
     std::ifstream f(filepath);

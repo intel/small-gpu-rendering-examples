@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 2.8)
 project(OpenGL)
 set(CMAKE_CXX_COMPILER "clang++")
 
-find_package(GLUT)
 find_package(OpenGL REQUIRED) # GLU
 find_package(GLEW REQUIRED)
 INCLUDE(FindPkgConfig)
