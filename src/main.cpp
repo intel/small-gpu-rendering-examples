@@ -101,7 +101,7 @@ SDL_GLContext initContext(SDL_Window *window) {
  * Copy buffers to memory, set shader attributes, bind to VAO.
  * Return bound VAO ID.
  */
-GLuint initBuffers(GLuint shaderProgram, SDL_GLContext context) {
+GLuint initBuffers(GLuint shaderProgram) {
     GLuint vbo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -140,7 +140,7 @@ int main(int argc, char *argv[]) {
     glewInit();
 
     auto program = initShaders();
-    initBuffers(program, context);
+    initBuffers(program);
 
     paint();
 
