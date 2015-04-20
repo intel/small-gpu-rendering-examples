@@ -15,9 +15,17 @@
 #ifndef ERROR_H
 #define ERROR_H
 
+#include <stdexcept>
+
 void printGlErrors_(const char* where="", const int line=0);
 
 #define printGlErrors() printGlErrors_(__func__, __LINE__)
 
+class Exception : public std::runtime_error
+{
+public:
+    explicit Exception(const std::string& msg="")
+        : runtime_error(msg) {}
+};
 
 #endif /* end of include guard: ERROR_H */

@@ -16,7 +16,6 @@
 #include <string>
 #include <fstream>
 #include <streambuf>
-#include <stdexcept>
 #include <GL/glew.h>
 #include <SDL.h>
 #include <SDL_opengl.h>
@@ -43,7 +42,7 @@ const std::string readFile(const std::string& filepath) {
     std::ifstream f(filepath);
     if (!f.is_open()) {
         std::cerr << "Unable to open file " << filepath << std::endl;
-        throw std::runtime_error("I/O Error");
+        throw Exception("I/O Error");
     }
     std::string str((std::istreambuf_iterator<char>(f)),
                      std::istreambuf_iterator<char>());
@@ -67,12 +66,12 @@ GLuint compileShader(const std::string& filename, ShaderType type) {
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
     if (status != GL_TRUE) {
         std::cerr << "Failed to compile shader:\n";
-        char buffer[512];
         std::cerr << source << std::endl;
         std::cerr << "************************************\n";
+        char buffer[512];
         glGetShaderInfoLog(shader, 512, NULL, buffer);
         std::cerr << buffer;
-        throw std::exception();
+        throw Exception();
     }
     printGlErrors();
     return shader;
@@ -83,7 +82,7 @@ void initGlew() {
     GLenum err = glewInit();
     printGlErrors();
     if(err != GLEW_OK) {
-        throw std::runtime_error("glewInit failed");
+        throw Exception("glewInit failed");
     }
 }
 
