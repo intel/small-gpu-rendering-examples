@@ -18,6 +18,7 @@
 #include <streambuf>
 #include <stdexcept>
 #include <GL/glew.h>
+#include <GL/glu.h>
 #include <SDL.h>
 #include <SDL_opengl.h>
 
@@ -34,6 +35,19 @@ const float vertices[] = {
 void keyPressHandler(const SDL_Event& event) {
     if (event.type != SDL_KEYDOWN) return;
 
+}
+
+void printGlErrors(const char* where="") {
+    GLenum error = GL_NO_ERROR;
+    do {
+        error = glGetError();
+        if (error != GL_NO_ERROR) {
+            std::cerr << "OpenGL Error: ";
+            if (strlen(where) > 0)
+                std::cerr << "(" << where << ") ";
+            std::cerr << gluErrorString(error) << std::endl;
+        }
+    } while (error != GL_NO_ERROR);
 }
 
 const std::string readFile(const std::string& filepath) {
@@ -71,6 +85,7 @@ GLuint compileShader(const std::string& filename, ShaderType type) {
         std::cerr << buffer;
         throw std::exception();
     }
+    printGlErrors(__func__);
     return shader;
 }
 
@@ -85,6 +100,7 @@ GLuint initShaders() {
     glAttachShader(shaderProgram, fshader);
     glLinkProgram(shaderProgram);
     glUseProgram(shaderProgram);
+    printGlErrors(__func__);
     return shaderProgram;
 }
 
@@ -94,6 +110,7 @@ SDL_GLContext initContext(SDL_Window *window) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
     SDL_GLContext context = SDL_GL_CreateContext(window);
+    printGlErrors(__func__);
     return context;
 }
 
@@ -123,11 +140,13 @@ GLuint initBuffers(GLuint shaderProgram) {
 
     GLint uniColor = glGetUniformLocation(shaderProgram, "triangleColor");
     glUniform3f(uniColor, 1.0f, 0.0f, 0.0f);
+    printGlErrors(__func__);
     return vao;
 }
 
 void paint() {
     glDrawArrays(GL_TRIANGLES, 0, 3);
+    printGlErrors(__func__);
 }
 
 int main(int argc, char *argv[]) {
@@ -138,6 +157,7 @@ int main(int argc, char *argv[]) {
     auto context = initContext(window);
     glewExperimental = GL_TRUE;
     glewInit();
+    printGlErrors(__func__);
 
     auto program = initShaders();
     initBuffers(program);
