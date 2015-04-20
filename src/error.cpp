@@ -18,14 +18,14 @@
 
 #include "error.h"
 
-void printGlErrors(const char* where) {
+void printGlErrors_(const char* where, const int line) {
     GLenum error = GL_NO_ERROR;
     do {
         error = glGetError();
         if (error != GL_NO_ERROR) {
-            std::cerr << "OpenGL Error: ";
+            std::cerr << "[ERROR] OpenGL ";
             if (strlen(where) > 0)
-                std::cerr << "(" << where << ") ";
+                std::cerr << "(" << where << ":" << line << ") ";
             std::cerr << gluErrorString(error) << std::endl;
         }
     } while (error != GL_NO_ERROR);

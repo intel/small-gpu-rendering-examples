@@ -15,7 +15,9 @@
 #ifndef ERROR_H
 #define ERROR_H
 
-void printGlErrors(const char* where="");
+void printGlErrors_(const char* where="", const int line=0);
+
+#define printGlErrors() printGlErrors_(__func__, __LINE__)
 
 
 #endif /* end of include guard: ERROR_H */
