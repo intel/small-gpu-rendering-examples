@@ -13,14 +13,12 @@
  * limitations under the License.
  */
 #include <iostream>
-#include <string>
-#include <fstream>
-#include <streambuf>
 #include <GL/glew.h>
 #include <SDL.h>
 #include <SDL_opengl.h>
 
 #include "error.h"
+#include "io.h"
 
 #ifndef SHADERS_DIR
 #define SHADERS_DIR "./shaders/"
@@ -37,17 +35,6 @@ void keyPressHandler(const SDL_Event& event) {
 
 }
 
-
-const std::string readFile(const std::string& filepath) {
-    std::ifstream f(filepath);
-    if (!f.is_open()) {
-        std::cerr << "Unable to open file " << filepath << std::endl;
-        throw Exception("I/O Error");
-    }
-    std::string str((std::istreambuf_iterator<char>(f)),
-                     std::istreambuf_iterator<char>());
-    return str;
-}
 
 enum class ShaderType {vertex, fragment};
 
