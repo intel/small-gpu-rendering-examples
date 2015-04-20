@@ -142,6 +142,8 @@ int main(int argc, char *argv[]) {
     auto program = initShaders();
     initBuffers(program, context);
 
+    paint();
+
     SDL_Event event;
     bool quit = false;
     while (!quit) {
@@ -149,7 +151,6 @@ int main(int argc, char *argv[]) {
             if (event.type == SDL_QUIT) quit = true;
             else keyPressHandler(event);
         }
-        paint();
         SDL_GL_SwapWindow(window);
     }
 
