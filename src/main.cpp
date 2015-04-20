@@ -30,12 +30,6 @@ const float vertices[] = {
     -0.5f, -0.5f,  0.0f, 0.0f, 1.0f  // vertex 3: Blue
 };
 
-void keyPressHandler(const SDL_Event& event) {
-    if (event.type != SDL_KEYDOWN) return;
-
-}
-
-
 enum class ShaderType {vertex, fragment};
 
 /**
@@ -146,11 +140,10 @@ int main(int argc, char *argv[]) {
     paint();
 
     SDL_Event event;
-    bool quit = false;
-    while (!quit) {
+    while (true) {
         if (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) quit = true;
-            else keyPressHandler(event);
+            if (event.type == SDL_QUIT) break;
+            if (event.type == SDL_KEYDOWN) break;
         }
         SDL_GL_SwapWindow(window);
     }
