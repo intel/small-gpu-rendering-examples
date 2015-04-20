@@ -26,9 +26,9 @@
 #endif
 
 const float vertices[] = {
-     0.0f,  0.5f,
-     0.5f, -0.5f,
-    -0.5f, -0.5f
+     0.0f,  0.5f,  1.0f, 0.0f, 0.0f, // vertex 1: Red
+     0.5f, -0.5f,  0.0f, 1.0f, 0.0f, // vertex 2: Green
+    -0.5f, -0.5f,  0.0f, 0.0f, 1.0f  // vertex 3: Blue
 };
 
 void keyPressHandler(const SDL_Event& event) {
@@ -112,10 +112,17 @@ GLuint initBuffers(GLuint shaderProgram, SDL_GLContext context) {
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
-    GLint uniColor = glGetUniformLocation(shaderProgram, "triangleColor");
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    glUniform3f(uniColor, 1.0f, 0.0f, 0.0f);
     glEnableVertexAttribArray(posAttrib);
+    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
+                          5*sizeof(float), 0);
+
+    GLint colorAttrib = glGetAttribLocation(shaderProgram, "color");
+    glEnableVertexAttribArray(colorAttrib);
+    glVertexAttribPointer(colorAttrib, 3, GL_FLOAT, GL_FALSE,
+                          5*sizeof(float), (void*)(2*sizeof(float)));
+
+    GLint uniColor = glGetUniformLocation(shaderProgram, "triangleColor");
+    glUniform3f(uniColor, 1.0f, 0.0f, 0.0f);
     return vao;
 }
 
