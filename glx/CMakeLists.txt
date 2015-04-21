@@ -5,5 +5,5 @@ FILE(GLOB HEADERS *.h)
 find_package(X11 REQUIRED)
 set(LIBS ${LIBS} ${X11_LIBRARY})
 
-add_executable(${PROGRAM} ${SOURCES} ${HEADERS})
+add_executable(${PROGRAM} ${COMMON_SOURCES} ${SOURCES} ${HEADERS})
 target_link_libraries(${PROGRAM} ${LIBS})

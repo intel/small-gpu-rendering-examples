@@ -17,7 +17,7 @@
 #include <fstream>
 #include <streambuf>
 
-#include "error.h"
+#include "common/error.h"
 
 const std::string readFile(const std::string& filepath) {
     std::ifstream f(filepath);

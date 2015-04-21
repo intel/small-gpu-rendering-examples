@@ -13,5 +13,5 @@ include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${GLEW_INCLUDE_DIRS})
 set(LIBS ${LIBS} ${SDL2_LIBRARIES} ${GLEW_LIBRARIES})
 
-add_executable(${PROGRAM} ${SOURCES} ${HEADERS})
+add_executable(${PROGRAM} ${COMMON_SOURCES} ${SOURCES} ${HEADERS})
 target_link_libraries(${PROGRAM} ${LIBS})
