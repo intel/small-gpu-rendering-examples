@@ -11,6 +11,8 @@
 #include <GL/gl.h>
 #include <GL/glx.h>
 
+#include "common/error.h"
+
 #define GLX_CONTEXT_MAJOR_VERSION_ARB 0x2091
 #define GLX_CONTEXT_MINOR_VERSION_ARB 0x2092
 
@@ -54,10 +56,8 @@ static int ctxErrorHandler(Display *dpy, XErrorEvent *ev) {
 
 int main(int argc, char* argv[]) {
     Display *display = XOpenDisplay(NULL);
-    if (!display) {
-        printf("Failed to open X display\n");
-        exit(1);
-    }
+    if (!display)
+        fail("Failed to open X display\n");
 
     // Get a matching FB config
     static int visual_attribs[] = {
@@ -80,19 +80,15 @@ int main(int argc, char* argv[]) {
     int glx_major, glx_minor;
     // FBConfigs were added in GLX version 1.3.
     if (!glXQueryVersion(display, &glx_major, &glx_minor) ||
-            ((glx_major == 1) && (glx_minor < 3)) || (glx_major < 1)) {
-        printf("Invalid GLX version");
-        exit(1);
-    }
+            ((glx_major == 1) && (glx_minor < 3)) || (glx_major < 1))
+        fail("Invalid GLX version");
 
     printf("Getting matching framebuffer configs\n");
     int fbcount;
     GLXFBConfig* fbc = glXChooseFBConfig(display, DefaultScreen(display),
-            visual_attribs, &fbcount);
-    if (!fbc) {
-        printf("Failed to retrieve a framebuffer config\n");
-        exit(1);
-    }
+                                         visual_attribs, &fbcount);
+    if (!fbc)
+        fail("Failed to retrieve a framebuffer config\n");
     printf("Found %d matching FB configs.\n", fbcount);
 
     // Pick the FB config/visual with the most samples per pixel
@@ -143,10 +139,8 @@ int main(int argc, char* argv[]) {
             0, 0, 100, 100, 0, vi->depth, InputOutput,
             vi->visual,
             CWBorderPixel|CWColormap|CWEventMask, &swa);
-    if (!win) {
-        printf("Failed to create window.\n");
-        exit(1);
-    }
+    if (!win)
+        fail("Failed to create window.\n");
 
     // Done with the visual info data
     XFree(vi);
@@ -222,10 +216,8 @@ int main(int argc, char* argv[]) {
     XSync(display, false);
     // Restore the original error handler
     XSetErrorHandler(oldHandler);
-    if (ctxErrorOccurred || !ctx) {
-        printf("Failed to create an OpenGL context\n");
-        exit(1);
-    }
+    if (ctxErrorOccurred || !ctx)
+        fail("Failed to create an OpenGL context\n");
 
     // Verifying that context is a direct context
     if (! glXIsDirect (display, ctx)) {
