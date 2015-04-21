@@ -81,6 +81,38 @@ GLXFBConfig chooseFBConfig(Display* display) {
     return fbc[best_fbc];
 }
 
+GLXContext createContext(Display* display, GLXFBConfig bestFbc) {
+    // NOTE: It is not necessary to create or make current to a context before
+    // calling glXGetProcAddressARB
+    glXCreateContextAttribsARBProc glXCreateContextAttribsARB = 0;
+    glXCreateContextAttribsARB = (glXCreateContextAttribsARBProc)
+        glXGetProcAddressARB((const GLubyte *) "glXCreateContextAttribsARB");
+
+    int context_attribs[] = {
+        GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
+        GLX_CONTEXT_MINOR_VERSION_ARB, 0,
+        //GLX_CONTEXT_FLAGS_ARB, GLX_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+        None
+    };
+
+    printf("Creating context\n");
+    GLXContext ctx = 0;
+    ctx = glXCreateContextAttribsARB(display, bestFbc, 0,
+            true, context_attribs);
+    // Sync to ensure any errors generated are processed.
+    XSync(display, false);
+    if (ctx) printf("Created GL 3.0 context\n");
+    else     fail("Failed to create GL 3.0 context\n");
+    // Sync to ensure any errors generated are processed.
+    XSync(display, false);
+
+    if (! glXIsDirect(display, ctx))
+        printf("Indirect GLX rendering context obtained\n");
+    else
+        printf("Direct GLX rendering context obtained\n");
+    return ctx;
+}
+
 int main(int argc, char* argv[]) {
     Display *display = XOpenDisplay(NULL);
     if (!display)
@@ -116,47 +148,7 @@ int main(int argc, char* argv[]) {
     printf("Mapping window\n");
     XMapWindow(display, win);
 
-    // Get the default screen's GLX extension list
-    const char *glxExts = glXQueryExtensionsString(display,
-            DefaultScreen(display));
-
-    // NOTE: It is not necessary to create or make current to a context before
-    // calling glXGetProcAddressARB
-    glXCreateContextAttribsARBProc glXCreateContextAttribsARB = 0;
-    glXCreateContextAttribsARB = (glXCreateContextAttribsARBProc)
-        glXGetProcAddressARB((const GLubyte *) "glXCreateContextAttribsARB");
-    GLXContext ctx = 0;
-
-
-    int context_attribs[] = {
-        GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
-        GLX_CONTEXT_MINOR_VERSION_ARB, 0,
-        //GLX_CONTEXT_FLAGS_ARB, GLX_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
-        None
-    };
-
-    printf("Creating context\n");
-    ctx = glXCreateContextAttribsARB(display, bestFbc, 0,
-            true, context_attribs);
-
-    // Sync to ensure any errors generated are processed.
-    XSync(display, false);
-    if (ctx)
-        printf("Created GL 3.0 context\n");
-    else
-        fail("Failed to create GL 3.0 context\n");
-
-    // Sync to ensure any errors generated are processed.
-    XSync(display, false);
-
-    // Verifying that context is a direct context
-    if (! glXIsDirect (display, ctx)) {
-        printf("Indirect GLX rendering context obtained\n");
-    }
-    else {
-        printf("Direct GLX rendering context obtained\n");
-    }
-
+    auto ctx = createContext(display, bestFbc);
     printf("Making context current\n");
     glXMakeCurrent(display, win, ctx);
 
