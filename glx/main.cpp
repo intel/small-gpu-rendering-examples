@@ -36,6 +36,13 @@ const int visual_attribs[] = {
     None
 };
 
+void checkGlxVersion(Display* display) {
+    int glx_major, glx_minor;
+    // FBConfigs were added in GLX version 1.3.
+    if (!glXQueryVersion(display, &glx_major, &glx_minor) ||
+            ((glx_major == 1) && (glx_minor < 3)) || (glx_major < 1))
+        fail("Invalid GLX version");
+}
 
 GLXFBConfig chooseFBConfig(Display* display) {
     printf("Getting matching framebuffer configs\n");
@@ -77,14 +84,7 @@ int main(int argc, char* argv[]) {
     Display *display = XOpenDisplay(NULL);
     if (!display)
         fail("Failed to open X display\n");
-
-
-    int glx_major, glx_minor;
-    // FBConfigs were added in GLX version 1.3.
-    if (!glXQueryVersion(display, &glx_major, &glx_minor) ||
-            ((glx_major == 1) && (glx_minor < 3)) || (glx_major < 1))
-        fail("Invalid GLX version");
-
+    checkGlxVersion(display);
     auto bestFbc = chooseFBConfig(display);
 
     // Get a visual
