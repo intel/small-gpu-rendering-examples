@@ -19,35 +19,25 @@
 typedef GLXContext (*glXCreateContextAttribsARBProc)
     (Display*, GLXFBConfig, GLXContext, Bool, const int*);
 
-int main(int argc, char* argv[]) {
-    Display *display = XOpenDisplay(NULL);
-    if (!display)
-        fail("Failed to open X display\n");
+const int visual_attribs[] = {
+    GLX_X_RENDERABLE    , true,
+    GLX_DRAWABLE_TYPE   , GLX_WINDOW_BIT,
+    GLX_RENDER_TYPE     , GLX_RGBA_BIT,
+    GLX_X_VISUAL_TYPE   , GLX_TRUE_COLOR,
+    GLX_RED_SIZE        , 8,
+    GLX_GREEN_SIZE      , 8,
+    GLX_BLUE_SIZE       , 8,
+    GLX_ALPHA_SIZE      , 8,
+    GLX_DEPTH_SIZE      , 24,
+    GLX_STENCIL_SIZE    , 8,
+    GLX_DOUBLEBUFFER    , true,
+    //GLX_SAMPLE_BUFFERS  , 1,
+    //GLX_SAMPLES         , 4,
+    None
+};
 
-    // Get a matching FB config
-    static int visual_attribs[] = {
-        GLX_X_RENDERABLE    , true,
-        GLX_DRAWABLE_TYPE   , GLX_WINDOW_BIT,
-        GLX_RENDER_TYPE     , GLX_RGBA_BIT,
-        GLX_X_VISUAL_TYPE   , GLX_TRUE_COLOR,
-        GLX_RED_SIZE        , 8,
-        GLX_GREEN_SIZE      , 8,
-        GLX_BLUE_SIZE       , 8,
-        GLX_ALPHA_SIZE      , 8,
-        GLX_DEPTH_SIZE      , 24,
-        GLX_STENCIL_SIZE    , 8,
-        GLX_DOUBLEBUFFER    , true,
-        //GLX_SAMPLE_BUFFERS  , 1,
-        //GLX_SAMPLES         , 4,
-        None
-    };
 
-    int glx_major, glx_minor;
-    // FBConfigs were added in GLX version 1.3.
-    if (!glXQueryVersion(display, &glx_major, &glx_minor) ||
-            ((glx_major == 1) && (glx_minor < 3)) || (glx_major < 1))
-        fail("Invalid GLX version");
-
+GLXFBConfig chooseFBConfig(Display* display) {
     printf("Getting matching framebuffer configs\n");
     int fbcount;
     GLXFBConfig* fbc = glXChooseFBConfig(display, DefaultScreen(display),
@@ -79,11 +69,23 @@ int main(int argc, char* argv[]) {
         }
         XFree(vi);
     }
-
-    GLXFBConfig bestFbc = fbc[best_fbc];
-
-    // Be sure to free the FBConfig list allocated by glXChooseFBConfig()
     XFree(fbc);
+    return fbc[best_fbc];
+}
+
+int main(int argc, char* argv[]) {
+    Display *display = XOpenDisplay(NULL);
+    if (!display)
+        fail("Failed to open X display\n");
+
+
+    int glx_major, glx_minor;
+    // FBConfigs were added in GLX version 1.3.
+    if (!glXQueryVersion(display, &glx_major, &glx_minor) ||
+            ((glx_major == 1) && (glx_minor < 3)) || (glx_major < 1))
+        fail("Invalid GLX version");
+
+    auto bestFbc = chooseFBConfig(display);
 
     // Get a visual
     XVisualInfo *vi = glXGetVisualFromFBConfig(display, bestFbc);
