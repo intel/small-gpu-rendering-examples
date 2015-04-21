@@ -1,4 +1,4 @@
-set(PROGRAMS main)
+set(PROGRAMS tutorial)
 # TODO: change this when the programs get installed, make it platform indep.
 add_definitions(-DSHADERS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/shaders/")
 FILE(GLOB SOURCES *.cpp)
