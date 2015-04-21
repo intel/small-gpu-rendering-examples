@@ -18,7 +18,7 @@
 #include <SDL_opengl.h>
 
 #include "common/error.h"
-#include "io.h"
+#include "common/io.h"
 
 #ifndef SHADERS_DIR
 #define SHADERS_DIR "./shaders/"
