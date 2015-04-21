@@ -94,23 +94,22 @@ GLXContext createContext(Display* display, GLXFBConfig bestFbc) {
         //GLX_CONTEXT_FLAGS_ARB, GLX_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
         None
     };
-
     printf("Creating context\n");
-    GLXContext ctx = 0;
-    ctx = glXCreateContextAttribsARB(display, bestFbc, 0,
-            true, context_attribs);
+    GLXContext context = 0;
+    context = glXCreateContextAttribsARB(display, bestFbc, 0,
+              true, context_attribs);
     // Sync to ensure any errors generated are processed.
     XSync(display, false);
-    if (ctx) printf("Created GL 3.0 context\n");
-    else     fail("Failed to create GL 3.0 context\n");
+    if (context) printf("Created GL 3.0 context\n");
+    else         fail("Failed to create GL 3.0 context\n");
     // Sync to ensure any errors generated are processed.
     XSync(display, false);
 
-    if (! glXIsDirect(display, ctx))
+    if (! glXIsDirect(display, context))
         printf("Indirect GLX rendering context obtained\n");
     else
         printf("Direct GLX rendering context obtained\n");
-    return ctx;
+    return context;
 }
 
 int main(int argc, char* argv[]) {
@@ -148,9 +147,9 @@ int main(int argc, char* argv[]) {
     printf("Mapping window\n");
     XMapWindow(display, win);
 
-    auto ctx = createContext(display, bestFbc);
+    auto context = createContext(display, bestFbc);
     printf("Making context current\n");
-    glXMakeCurrent(display, win, ctx);
+    glXMakeCurrent(display, win, context);
 
     glClearColor(0, 0.5, 1, 1);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -158,14 +157,14 @@ int main(int argc, char* argv[]) {
 
     sleep(1);
 
-    glClearColor (1, 0.5, 0, 1);
+    glClearColor(1, 0.5, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
     glXSwapBuffers(display, win);
 
     sleep(1);
 
     glXMakeCurrent(display, 0, 0);
-    glXDestroyContext(display, ctx);
+    glXDestroyContext(display, context);
     XDestroyWindow(display, win);
     XFreeColormap(display, cmap);
     XCloseDisplay(display);
