@@ -1,4 +1,4 @@
-set(PROGRAMS tutorial)
+set(PROGRAM tutorial)
 # TODO: change this when the programs get installed, make it platform indep.
 add_definitions(-DSHADERS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/shaders/")
 FILE(GLOB SOURCES *.cpp)
@@ -13,7 +13,5 @@ include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${GLEW_INCLUDE_DIRS})
 set(LIBS ${LIBS} ${SDL2_LIBRARIES} ${GLEW_LIBRARIES})
 
-foreach(program ${PROGRAMS})
-    add_executable(${program} ${SOURCES} ${HEADERS})
-    target_link_libraries(${program} ${LIBS})
-endforeach(program)
+add_executable(${PROGRAM} ${SOURCES} ${HEADERS})
+target_link_libraries(${PROGRAM} ${LIBS})
