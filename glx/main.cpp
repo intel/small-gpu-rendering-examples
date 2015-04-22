@@ -111,6 +111,13 @@ GLXContext createContext(Display* display, GLXFBConfig bestFbc) {
         printf("Direct GLX rendering context obtained\n");
     return context;
 }
+void initGlew() {
+    glewExperimental = GL_TRUE;
+    GLenum err = glewInit();
+    if(err != GLEW_OK)
+        fail("glewInit failed: %s\n", glewGetErrorString(err));
+    printGlErrors();
+}
 
 int main(int argc, char* argv[]) {
     Display *display = XOpenDisplay(NULL);
@@ -150,10 +157,12 @@ int main(int argc, char* argv[]) {
     auto context = createContext(display, bestFbc);
     printf("Making context current\n");
     glXMakeCurrent(display, win, context);
+    initGlew();
 
     glClearColor(0, 0.5, 1, 1);
     glClear(GL_COLOR_BUFFER_BIT);
     glXSwapBuffers(display, win);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     sleep(1);
 
