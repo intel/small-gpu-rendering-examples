@@ -112,7 +112,6 @@ EGLConfig chooseFBConfig(EGLDisplay display) {
         EGL_GREEN_SIZE, 8,
         EGL_RED_SIZE, 8,
         EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-        EGL_SURFACE_TYPE, EGL_WINDOW_BIT | EGL_PBUFFER_BIT,
         EGL_NONE
     };
     printf("Getting matching framebuffer configs\n");
