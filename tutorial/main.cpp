@@ -64,6 +64,11 @@ GLuint compileShader(const std::string& filename, ShaderType type) {
 void initGlew() {
     glewExperimental = GL_TRUE;
     GLenum err = glewInit();
+    // ignore "invalid enumerant" error, it's a known bug
+    // https://www.opengl.org/wiki/OpenGL_Loading_Library
+    GLenum error = glGetError();
+    if (error != GL_INVALID_ENUM)
+        throw Exception("glewInit failed");
     printGlErrors();
     if(err != GLEW_OK) {
         throw Exception("glewInit failed");
