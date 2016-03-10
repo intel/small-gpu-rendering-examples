@@ -36,12 +36,15 @@ enum class ShaderType {vertex, fragment};
  * Read |filename| from SHADERS_DIR, compile it as a shader and return its ID.
  */
 GLuint compileShader(const std::string& filename, ShaderType type) {
-    auto source = readFile(SHADERS_DIR + filename).c_str();
+    std::string source = readFile(SHADERS_DIR + filename);
+    if (source.length() == 0)
+      throw Exception("empty shader file");
     auto gl_type = GL_VERTEX_SHADER;
     if (type != ShaderType::vertex) gl_type = GL_FRAGMENT_SHADER;
 
     GLuint shader = glCreateShader(gl_type);
-    glShaderSource(shader, 1, &source, NULL);
+    const char* source_c = source.c_str();
+    glShaderSource(shader, 1, &source_c, NULL);
     glCompileShader(shader);
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
