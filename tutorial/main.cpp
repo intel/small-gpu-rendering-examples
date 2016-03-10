@@ -131,6 +131,7 @@ GLuint initBuffers(GLuint shaderProgram) {
 }
 
 void paint() {
+    glClear(GL_COLOR_BUFFER_BIT);
     glDrawArrays(GL_TRIANGLES, 0, 3);
     printGlErrors();
 }
