@@ -77,8 +77,9 @@ GLXFBConfig chooseFBConfig(Display* display) {
         }
         XFree(vi);
     }
+    GLXFBConfig best = fbc[best_fbc];
     XFree(fbc);
-    return fbc[best_fbc];
+    return best;
 }
 
 GLXContext createContext(Display* display, GLXFBConfig bestFbc) {
