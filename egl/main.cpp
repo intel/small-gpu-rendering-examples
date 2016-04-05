@@ -14,7 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// can be compiled by itself with:
+// Try creating an EGL context, either surface-less or with a pbuffer. Doesn't
+// show anything, just prints GL info and "Success!" on stdout.
+// Can be compiled by itself with:
 //     gcc main.cpp -std=c++11 -lEGL -lGLESv2
 
 #include <stdio.h>

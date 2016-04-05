@@ -15,8 +15,12 @@ You will need at least OpenGL 3.2 and Linux (tested on Ubuntu Trusty).
     $ cd build
     $ cmake ..
     $ make
-    $ ./bin/main
+    $ ./bin/tutorial
 
-Currently it should just display a simple triangle.
+Currently it should just display a simple triangle. For other examples, look
+into the `build/bin/` directory. But be careful, some of them show off a driver
+bug. A binary called `foo` is going to be created from the directory called
+`foo`, you can look there to find out what is the expected behavior.
+
 Installation is not supported (and probably never will be, these are just
 experiments).
