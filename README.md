@@ -1,4 +1,4 @@
-# OpenGL snippets
+# Small GPU rendering examples
 
 Pieces of C++ and OpenGL code for learning and experimenting. Some of the code
 was created with the help of the tutorial on https://open.gl.
