@@ -12,6 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// This example is mostly a copy of the basic triangle example in 'tutorial/'.
+// It uses shaders similar to the ones in the WebGL conformance test
+// https://github.com/KhronosGroup/WebGL/blob/master/sdk/tests/conformance/glsl/bugs/temp-expressions-should-not-crash.html
+// with 10000 operations, showing a bug in Intel GPU drivers, as described in
+// https://bugs.chromium.org/p/chromium/issues/detail?id=593680. The expected
+// behavior of this program is a freeze (on Intel GPUs at least). Be warned that
+// this might freeze your desktop and you will have to kill this process from
+// the tty.
 #include <iostream>
 #include <GL/glew.h>
 #include <SDL.h>

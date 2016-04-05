@@ -1,7 +1,9 @@
-/*
- * Code adapted from:
- *   https://www.opengl.org/wiki/Tutorial:_OpenGL_3.0_Context_Creation_(GLX)
- */
+// Code inspired by the following tutorial:
+// https://www.opengl.org/wiki/Tutorial:_OpenGL_3.0_Context_Creation_(GLX)
+// Create context using the low level GLX, similarly to how Chromium gets the
+// context (might have already changed). Create small window, show some colors
+// and close it after a couple of seconds.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

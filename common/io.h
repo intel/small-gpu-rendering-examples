@@ -12,6 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// Convenience functions for dealing with I/O.
+
 #ifndef IO_H
 #define IO_H
 
