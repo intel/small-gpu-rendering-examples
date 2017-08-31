@@ -29,6 +29,7 @@
 #include <GL/glx.h>
 
 #include "common/error.h"
+#include "common/other.h"
 
 #define GLX_CONTEXT_MAJOR_VERSION_ARB 0x2091
 #define GLX_CONTEXT_MINOR_VERSION_ARB 0x2092
@@ -127,13 +128,6 @@ GLXContext createContext(Display* display, GLXFBConfig bestFbc) {
     else
         printf("Direct GLX rendering context obtained\n");
     return context;
-}
-void initGlew() {
-    glewExperimental = GL_TRUE;
-    GLenum err = glewInit();
-    if(err != GLEW_OK)
-        fail("glewInit failed: %s\n", glewGetErrorString(err));
-    printGlErrors();
 }
 
 int main(int argc, char* argv[]) {
