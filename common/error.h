@@ -19,6 +19,7 @@
 
 #include <stdexcept>
 #include <stdio.h>
+#include <iostream>
 
 // Internal, use the macro "printGlErrors" instead.
 void printGlErrors_(const char* where="", const int line=0);

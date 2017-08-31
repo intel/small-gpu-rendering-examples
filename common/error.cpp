@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "error.h"
+
 #include <string.h>
 #include <iostream>
 #include <GL/glu.h>
-
-#include "error.h"
 
 void printGlErrors_(const char* where, const int line) {
     GLenum error = GL_NO_ERROR;

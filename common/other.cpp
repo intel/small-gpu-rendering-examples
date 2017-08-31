@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "other.h"
 
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include "error.h"
 #include "io.h"
-#include "other.h"
 
 // should be defined in CMakeLists.txt
 #ifndef SHADERS_DIR

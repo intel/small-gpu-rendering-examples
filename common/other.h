@@ -16,6 +16,8 @@
 #define OTHER_H
 
 #include <iostream>
+#include <GL/glew.h>
+#include <GL/gl.h>
 
 enum class ShaderType {vertex, fragment};
 
