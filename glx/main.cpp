@@ -28,8 +28,8 @@
 #include <GL/gl.h>
 #include <GL/glx.h>
 
-#include "common/error.h"
 #include "common/other.h"
+#include "common/error.h"
 
 #define GLX_CONTEXT_MAJOR_VERSION_ARB 0x2091
 #define GLX_CONTEXT_MINOR_VERSION_ARB 0x2092

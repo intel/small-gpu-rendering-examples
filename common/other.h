@@ -15,6 +15,15 @@
 #ifndef OTHER_H
 #define OTHER_H
 
+#include <iostream>
+
+enum class ShaderType {vertex, fragment};
+
 void initGlew();
+
+/**
+ * Read |filepath|, compile it as a shader and return its ID.
+ */
+GLuint compileShader(const std::string& filepath, ShaderType type);
 
 #endif /* end of include guard: OTHER_H */
