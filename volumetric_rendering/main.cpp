@@ -23,13 +23,17 @@
 #include "common/io.h"
 #include "common/other.h"
 
-
+// canvas across the whole screen, so we can just paint with the fragment shader
 const float vertices[] = {
-     0.0f,  0.5f,  1.0f, 0.0f, 0.0f, // vertex 1: Red
-     0.5f, -0.5f,  0.0f, 1.0f, 0.0f, // vertex 2: Green
-    -0.5f, -0.5f,  0.0f, 0.0f, 1.0f  // vertex 3: Blue
+    // right bottom half of screen
+    -1, -1, 0,
+    1, -1, 0,
+    1, 1, 0,
+    // left top half of screen
+    -1, -1, 0,
+    1, 1, 0,
+    -1, 1, 0,
 };
-
 
 /**
  * Return ID of the linked and activated shader.
@@ -73,29 +77,21 @@ GLuint initBuffers(GLuint shaderProgram) {
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
     glEnableVertexAttribArray(posAttrib);
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
-                          5*sizeof(float), 0);
-
-    GLint colorAttrib = glGetAttribLocation(shaderProgram, "color");
-    glEnableVertexAttribArray(colorAttrib);
-    glVertexAttribPointer(colorAttrib, 3, GL_FLOAT, GL_FALSE,
-                          5*sizeof(float), (void*)(2*sizeof(float)));
-
-    GLint uniColor = glGetUniformLocation(shaderProgram, "triangleColor");
-    glUniform3f(uniColor, 1.0f, 0.0f, 0.0f);
+                          3*sizeof(float), 0);
     printGlErrors();
     return vao;
 }
 
 void paint() {
     glClear(GL_COLOR_BUFFER_BIT);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
     printGlErrors();
 }
 
 int main(int argc, char *argv[]) {
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window* window = SDL_CreateWindow("Hello World",
-                                           100, 100, 800, 600,
+                                           100, 100, 800, 800,
                                            SDL_WINDOW_OPENGL);
     auto context = initContext(window);
     initGlew();
@@ -108,11 +104,9 @@ int main(int argc, char *argv[]) {
     while (true) {
         if (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) break;
-            if (event.type == SDL_KEYDOWN) break;
         }
         SDL_GL_SwapWindow(window);
     }
-
     SDL_GL_DeleteContext(context);
     SDL_DestroyWindow(window);
     SDL_Quit();
